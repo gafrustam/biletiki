@@ -3,32 +3,21 @@ from telegram.ext import filters, ApplicationBuilder, CommandHandler, ContextTyp
 
 
 def read_table(filename):
-    first_map = dict()
-    others_map = dict()
+    transliteration_map = dict()
     for line in open(filename):
         l = line.strip().split(",")
-        first_map[l[0]] = l[1]
-        if l[2] == "":
-            others_map[l[0]] = l[1]
-        else:
-            others_map[l[0]] = l[2]
-    return first_map, others_map
+        transliteration_map[l[0]] = l[1]
+    return transliteration_map
 
 
 def transliteration(s):
-    first = True
     s = s.lower()
     res = ""
     for c in s:
         if c == " ":
             res += " "
-            first = True
             continue
-        if first:
-            res += first_map[c]
-        else:
-            res += others_map[c]
-        first = False
+        res += transliteration_map[c]
     return res.upper()
 
 
@@ -45,7 +34,7 @@ async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                                     f'написанием')
 
 
-first_map, others_map = read_table("table.csv")
+transliteration_map = read_table("table.csv")
 app = ApplicationBuilder().token("5816063178:AAFTFqc-SWGrqXQUXzX3ZCofHKNgOI9PbWo").build()
 app.add_handler(CommandHandler("start", hello))
 app.add_handler(MessageHandler(None, process_message))
