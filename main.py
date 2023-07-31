@@ -14,10 +14,11 @@ def transliteration(s):
     s = s.lower()
     res = ""
     for c in s:
-        if c == " ":
-            res += " "
-            continue
-        res += transliteration_map[c]
+        if c in transliteration_map.keys():
+            res += transliteration_map[c]
+        else:
+            res += c
+
     return res.upper()
 
 
