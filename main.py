@@ -24,6 +24,8 @@ def transliteration(s):
             res += transliteration_map[c]
         else:
             res += c
+        if c == " ":
+            first = True
 
     return res.upper()
 
