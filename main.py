@@ -13,7 +13,13 @@ def read_table(filename):
 def transliteration(s):
     s = s.lower()
     res = ""
+    first = True
     for c in s:
+        if first and c == 'ю':
+            first = False
+            res += "yu"
+            continue
+        first = False
         if c in transliteration_map.keys():
             res += transliteration_map[c]
         else:
